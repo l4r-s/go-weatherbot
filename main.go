@@ -83,7 +83,9 @@ import (
      router.HandleFunc("/data", GetAllDataEndpoint).Methods("GET")
      router.HandleFunc("/data/{devid}", GetDataEndpoint).Methods("GET")
      router.HandleFunc("/data/{devid}/{temp}/{hum}", PutDataEndpoint).Methods("PUT")
-     log.Fatal(http.ListenAndServe(":12345", router))
+     router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
+     http.Handle("/", router)
+     log.Fatal(http.ListenAndServe(":8080", router))
 
  }
 
