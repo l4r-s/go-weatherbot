@@ -11,36 +11,6 @@ import (
      "encoding/json"
  )
 
- type DataStruct struct {
-     ID        string       `json:"id,omitempty"`
-     DeviceID  string       `json:"devid,omitempty"`
-     Temp      float64      `json:"temp,omitempty"`
-     Hum       float64      `json:"hum,omitempty"`
-     Timestamp time.Time    `json:"timestamp,omitempty"`
- }
-
-
- func DBQuery (query string) (data []DataStruct) {
-   var dbid string
-   var devid string
-   var temp float64
-   var hum float64
-   var timestamp float64
-
-   db, err := sql.Open("sqlite3", "./foo.db")
-   checkErr(err)
-   rows, err := db.Query(query)
-   checkErr(err)
-   for rows.Next() {
-     err = rows.Scan(&dbid, &devid, &temp, &hum, &timestamp)
-     checkErr(err)
-     timestamp_human := time.Unix(int64(timestamp), 0)
-     data = append(data, DataStruct{ID: dbid, DeviceID: devid, Temp: temp, Hum: hum, Timestamp: timestamp_human})
-   }
-     rows.Close()
-     db.Close()
-     return
- }
 
  func GetAllDataEndpoint(w http.ResponseWriter, req *http.Request) {
    var data []DataStruct
@@ -48,11 +18,19 @@ import (
    json.NewEncoder(w).Encode(data)
  }
 
- func GetDataEndpoint(w http.ResponseWriter, req *http.Request) {
+ func GetDataByIdEndpoint(w http.ResponseWriter, req *http.Request) {
    var data []DataStruct
    params := mux.Vars(req)
    query := fmt.Sprint("SELECT * FROM data WHERE devid == '", params["devid"], "'")
    data = DBQuery(query)
+   json.NewEncoder(w).Encode(data)
+ }
+
+ func GetTempDataByIdEndpoint(w http.ResponseWriter, req *http.Request) {
+   var data []DataStructTemp
+   params := mux.Vars(req)
+   query := fmt.Sprint("SELECT timestamp, temp FROM data WHERE devid == '", params["devid"], "'")
+   data = GetTempFromDb(query)
    json.NewEncoder(w).Encode(data)
  }
 
@@ -81,7 +59,8 @@ import (
  func main() {
      router := mux.NewRouter()
      router.HandleFunc("/data", GetAllDataEndpoint).Methods("GET")
-     router.HandleFunc("/data/{devid}", GetDataEndpoint).Methods("GET")
+     router.HandleFunc("/data/{devid}", GetDataByIdEndpoint).Methods("GET")
+     router.HandleFunc("/data/{devid}/temp", GetTempDataByIdEndpoint).Methods("GET")
      router.HandleFunc("/data/{devid}/{temp}/{hum}", PutDataEndpoint).Methods("PUT")
      router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
      http.Handle("/", router)
