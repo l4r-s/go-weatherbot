@@ -1,0 +1,69 @@
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<h2>Temperature:</h2>
+<div style="width:75%;">
+  <canvas id="temperature-chart"></canvas>
+</div>
+
+<h2>Humidity:</h2>
+<div style="width:75%;">
+  <canvas id="humidity-chart"></canvas>
+</div>
+
+<script>
+  function drawLineChart() {
+
+    function convertTime (unix) {
+      var time = new Date(parseInt(unix)*1000);
+      time = time.toLocaleString();
+      return time
+    }
+
+    var jsonDataTemp = $.ajax({
+      url: 'http://localhost:8080/data/dev01/temp',
+      dataType: 'json',
+    }).done(function (results) {
+
+      // Split timestamp and data into separate arrays
+      var labels = [], data=[];
+      console.log(results)
+      results.forEach(function(packet) {
+        labels.push(convertTime(packet.time));
+        data.push(parseFloat(packet.temperature));
+      });
+
+      // Create the chart.js data structure using 'labels' and 'data'
+      var tempData = {
+        labels : labels,
+        datasets : [{
+            fill                  : false,
+            strokeColor           : "rgba(151,187,205,1)",
+            pointColor            : "rgba(151,187,205,1)",
+            pointStrokeColor      : "#fff",
+            pointHighlightFill    : "#fff",
+            pointHighlightStroke  : "rgba(151,187,205,1)",
+            data                  : data
+        }]
+      };
+
+
+      // Get the context of the canvas element we want to select
+      var ctxTemp = document.getElementById("temperature-chart");
+      var ctxHum = document.getElementById("humidity-chart");
+
+      // Instantiate a new chart
+      var temperature = new Chart(ctxTemp , {
+        type: "line",
+        data: tempData,
+      });
+
+      var humidity = new Chart(ctxHum , {
+        type: "line",
+        data: humData,
+      });
+    });
+  }
+
+  drawLineChart();
+</script>
