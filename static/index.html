@@ -12,22 +12,33 @@
 </div>
 
 <script>
-  function drawLineChart() {
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
-    function convertTime (unix) {
-      var time = new Date(parseInt(unix)*1000);
-      time = time.toLocaleString();
-      return time
-    }
+function convertTime (unix) {
+  var time = new Date(parseInt(unix)*1000);
+  time = time.toLocaleString();
+  return time
+}
+
+function drawTempChart() {
+    var devid = getParameterByName('devid');
+    console.log(devid)
 
     var jsonDataTemp = $.ajax({
-      url: 'http://localhost:8080/data/dev01/temp',
+      url: 'http://localhost:8080/data/' + devid + '/temp',
       dataType: 'json',
     }).done(function (results) {
 
       // Split timestamp and data into separate arrays
       var labels = [], data=[];
-      console.log(results)
       results.forEach(function(packet) {
         labels.push(convertTime(packet.time));
         data.push(parseFloat(packet.temperature));
@@ -50,20 +61,58 @@
 
       // Get the context of the canvas element we want to select
       var ctxTemp = document.getElementById("temperature-chart");
-      var ctxHum = document.getElementById("humidity-chart");
 
       // Instantiate a new chart
       var temperature = new Chart(ctxTemp , {
         type: "line",
         data: tempData,
       });
+    });
+}
 
+
+function drawHumChart() {
+    var devid = getParameterByName('devid');
+    console.log(devid)
+
+    var jsonDataTemp = $.ajax({
+      url: 'http://localhost:8080/data/' + devid + '/hum',
+      dataType: 'json',
+    }).done(function (results) {
+
+      // Split timestamp and data into separate arrays
+      var labels = [], data=[];
+      results.forEach(function(packet) {
+        labels.push(convertTime(packet.time));
+        data.push(parseFloat(packet.humidity));
+      });
+
+      // Create the chart.js data structure using 'labels' and 'data'
+      var humData = {
+        labels : labels,
+        datasets : [{
+            fill                  : false,
+            strokeColor           : "rgba(151,187,205,1)",
+            pointColor            : "rgba(151,187,205,1)",
+            pointStrokeColor      : "#fff",
+            pointHighlightFill    : "#fff",
+            pointHighlightStroke  : "rgba(151,187,205,1)",
+            data                  : data
+        }]
+      };
+
+
+      // Get the context of the canvas element we want to select
+      var ctxHum = document.getElementById("humidity-chart");
+
+      // Instantiate a new chart
       var humidity = new Chart(ctxHum , {
         type: "line",
         data: humData,
       });
     });
-  }
+}
 
-  drawLineChart();
+  drawTempChart();
+  drawHumChart();
 </script>

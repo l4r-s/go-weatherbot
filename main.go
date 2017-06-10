@@ -34,6 +34,14 @@ import (
    json.NewEncoder(w).Encode(data)
  }
 
+ func GetHumDataByIdEndpoint(w http.ResponseWriter, req *http.Request) {
+   var data []DataStructHum
+   params := mux.Vars(req)
+   query := fmt.Sprint("SELECT timestamp, hum FROM data WHERE devid == '", params["devid"], "'")
+   data = GetHumFromDb(query)
+   json.NewEncoder(w).Encode(data)
+ }
+
  func PutDataEndpoint(w http.ResponseWriter, req *http.Request) {
    var data []DataStruct
    var timestamp float64
@@ -61,6 +69,7 @@ import (
      router.HandleFunc("/data", GetAllDataEndpoint).Methods("GET")
      router.HandleFunc("/data/{devid}", GetDataByIdEndpoint).Methods("GET")
      router.HandleFunc("/data/{devid}/temp", GetTempDataByIdEndpoint).Methods("GET")
+     router.HandleFunc("/data/{devid}/hum", GetHumDataByIdEndpoint).Methods("GET")
      router.HandleFunc("/data/{devid}/{temp}/{hum}", PutDataEndpoint).Methods("PUT")
      router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
      http.Handle("/", router)

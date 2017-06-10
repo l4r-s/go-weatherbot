@@ -60,3 +60,27 @@ func GetTempFromDb (query string) (data []DataStructTemp) {
     db.Close()
     return
 }
+
+
+type DataStructHum struct {
+    Time             float64      `json:"time,omitempty"`
+    Humidity         float64      `json:"humidity,omitempty"`
+}
+
+func GetHumFromDb (query string) (data []DataStructHum) {
+  var timestamp float64
+  var hum float64
+
+  db, err := sql.Open("sqlite3", "./foo.db")
+  checkErr(err)
+  rows, err := db.Query(query)
+  checkErr(err)
+  for rows.Next() {
+    err = rows.Scan(&timestamp, &hum)
+    checkErr(err)
+    data = append(data, DataStructHum{Time: timestamp, Humidity: hum})
+  }
+    rows.Close()
+    db.Close()
+    return
+}
