@@ -12,6 +12,7 @@
 </div>
 
 <script>
+var host = "localhost"
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -33,7 +34,7 @@ function drawTempChart() {
     console.log(devid)
 
     var jsonDataTemp = $.ajax({
-      url: 'http://localhost:8080/data/' + devid + '/temp',
+      url: 'http://'+ host + ':8080/data/' + devid + '/temp',
       dataType: 'json',
     }).done(function (results) {
 
@@ -76,7 +77,7 @@ function drawHumChart() {
     console.log(devid)
 
     var jsonDataTemp = $.ajax({
-      url: 'http://localhost:8080/data/' + devid + '/hum',
+      url: 'http://' + host + ':8080/data/' + devid + '/hum',
       dataType: 'json',
     }).done(function (results) {
 
