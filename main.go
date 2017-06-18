@@ -1,3 +1,6 @@
+// main package is a executable package, therefore it cannot be imported.
+// Compile the source code and run the executable, the webserver will be accesiable
+// under http://youripaddress:8080.
 package main
 
 import (
@@ -11,13 +14,16 @@ import (
      "encoding/json"
  )
 
-
+// GetAllDataEndpoint will server under /data and returns a json object with
+// the temperature, humidity and timestamp of creation of all devices in the database.
  func GetAllDataEndpoint(w http.ResponseWriter, req *http.Request) {
    var data []DataStruct
    data = DBQuery("SELECT * FROM data")
    json.NewEncoder(w).Encode(data)
  }
 
+// GetDataByIdEndpoint will serve under /data/{devid} and returns a json object with
+// the temperature, humidity and timestamp of creation of the specified device.
  func GetDataByIdEndpoint(w http.ResponseWriter, req *http.Request) {
    var data []DataStruct
    params := mux.Vars(req)
@@ -26,6 +32,8 @@ import (
    json.NewEncoder(w).Encode(data)
  }
 
+ // GetTempDataByIdEndpoint will serve under /data/{devid}/temp and returns a json object with
+ // the temperature and timestamp of creation of the specified device.
  func GetTempDataByIdEndpoint(w http.ResponseWriter, req *http.Request) {
    var data []DataStructTemp
    params := mux.Vars(req)
@@ -34,6 +42,8 @@ import (
    json.NewEncoder(w).Encode(data)
  }
 
+ // GetHumDataByIdEndpoint will serve under /data/{devid}/hum and returns a json object with
+ // the humidity and timestamp of creation of the specified device.
  func GetHumDataByIdEndpoint(w http.ResponseWriter, req *http.Request) {
    var data []DataStructHum
    params := mux.Vars(req)
@@ -42,6 +52,8 @@ import (
    json.NewEncoder(w).Encode(data)
  }
 
+// PutDataEndpoint will store the data given to the endpoint /data/[devid]/[temp]/[hum] into the sqllite database.
+// It will too call the function MailAlert() with the parameters temp and hum.
  func PutDataEndpoint(w http.ResponseWriter, req *http.Request) {
    var data []DataStruct
    var timestamp float64
