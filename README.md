@@ -2,7 +2,8 @@
 This repositor contains the sourcecode for my weatherbot PoC.
 
 ## Tanle of content
-[Components](#components)
+- [Components](#components)
+- [Installation](#installation)
 
 
 ## Components
