@@ -73,7 +73,7 @@ and run the server with
 Currently I am running the ESP with the instable version. This means the ESP can not always pull the sensor data from the DHT22.
 
 ### Schemantic (instable operation)
-![Schemantic instable](docs/schemantic_instable.png)
+![Schemantic instable](pics/schemantic_instable.png)
 
 #### Parts
 - ESP12F
@@ -82,7 +82,7 @@ Currently I am running the ESP with the instable version. This means the ESP can
 - 2x AA bettery
 
 ### Schemantic (stable operation)
-![Schemantic stable](docs/schemantic_stable.png)
+![Schemantic stable](pics/schemantic_stable.png)
 
 
 #### Parts
@@ -110,7 +110,7 @@ At the moment you can only display data from one device at the same time.
 ~~~
 http://SERVERIP:8080/?devid={devicename}
 ~~~
-![JSFrontend](docs/js-frontend.png)
+![JSFrontend](pics/js-frontend.png)
 
 ## JSON API
 The JSON API is located undet http://SERVERIPADDRESS:8080/data
