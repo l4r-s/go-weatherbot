@@ -5,7 +5,6 @@ This repositor contains the sourcecode for my weatherbot PoC.
 [Components](#components)
 
 
-(#components)
 ## Components
 - Webserver written in go with JSON API and JS frontend (can be run on a Raspberry Pi or in the cloud)
 - Sqllite DB for persistent storage
