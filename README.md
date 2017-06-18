@@ -97,7 +97,7 @@ http://SERVERIP:8080/?devid={devicename}
 ![JSFrontend](docs/js-frontend.png)
 
 ## JSON API
-The JSON API is located undet http://localhost:8080/data
+The JSON API is located undet http://SERVERIPADDRESS:8080/data
 
 ### /data
 ~~~
