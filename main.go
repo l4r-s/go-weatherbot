@@ -62,6 +62,8 @@ import (
    data = DBQuery(query)
    json.NewEncoder(w).Encode(data)
    fmt.Println("inserted data")
+
+   MailAlert (params["temp"], params["hum"])
  }
 
  func main() {
