@@ -70,11 +70,27 @@ and run the server with
 ~~~
 
 ## ESP12F
+Currently I am running the ESP with the instable version. This means the ESP can not always pull the sensor data from the DHT22.
+
 ### Schemantic (instable operation)
 ![Schemantic instable](docs/schemantic_instable.png)
 
+#### Parts
+- ESP12F
+- 3x 4.7k resistors
+- DHT22 sensor
+- 2x AA bettery
+
 ### Schemantic (stable operation)
 ![Schemantic stable](docs/schemantic_stable.png)
+
+
+#### Parts
+- ESP12F
+- 3x 4.7k resistors
+- DHT22 sensor
+- 2x AA bettery
+- 1000 uF capacitor
 
 ### Flashing
 Flash the arduino code located under arduino/sketch to the ESP12F with the Arduino IDE.
