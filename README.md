@@ -4,6 +4,9 @@ This repositor contains the sourcecode for my weatherbot PoC.
 ## Tanle of content
 - [Components](#components)
 - [Installation](#installation)
+- [ESP12F](#esp12f)
+- [Frontend](#frontend)
+- [Source Code Documentation](code-docs.txt)
 
 
 ## Components
@@ -107,8 +110,8 @@ const char* host = "SERVERIPADDRESS";
 ~~~
 and on line 67 "prod01" to your device name.
 
-# Server Frontend
-## JS Frontend
+## Frontend
+### JS Frontend
 Under http://SERVERIP:8080 the webserver serves a static HTML with JS file.
 At the moment you can only display data from one device at the same time.
 
@@ -117,7 +120,7 @@ http://SERVERIP:8080/?devid={devicename}
 ~~~
 ![JSFrontend](pics/js-frontend.png)
 
-## JSON API
+### JSON API
 The JSON API is located undet http://SERVERIPADDRESS:8080/data
 
 ### /data
