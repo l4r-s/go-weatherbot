@@ -77,6 +77,14 @@ and run the server with
 ./go-weatherbot
 ~~~
 
+#### Use Docker
+
+Run the following docker command to get the database mounted under `./data/foo.db`
+
+~~~bash
+$ docker run -v `pwd`/data:/data -p 8080:8080 l4rs/go-weatherbot:0.1
+~~~
+
 ## ESP12F
 Currently I am running the ESP with the instable version. This means the ESP can not always pull the sensor data from the DHT22.
 
